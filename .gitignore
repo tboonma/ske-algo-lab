@@ -34,3 +34,10 @@
 # IDE files
 .vscode/
 tempCodeRunnerFile.cpp
+tempCodeRunnerFile
+CMakeLists.txt
+*output.txt
+cmake-build-debug/
+
+# MacOS files
+.idea/
