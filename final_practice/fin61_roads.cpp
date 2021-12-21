@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <cstring>
 using namespace std;
 
 struct Road {
@@ -15,19 +16,19 @@ struct Road {
 
 map< int, vector<Road> > city;
 int speed_limit;
-bool visited[2000010];
+int visited[2000010];
+int time_visited = 1;
 
 bool check_path(int start, int stop) {
-    visited[start] = true;
+    visited[start] = time_visited;
     bool able;
     if (start == stop)
         return true;
-    if (city[start].empty()) {
-        return false;
-    }
     for (auto i=city[start].begin(); i!=city[start].end(); i++) {
-        if (visited[i->stop]) {
+        if (visited[i->stop] == time_visited) {
             continue;
+        } else if (i->stop == stop){
+            return true;
         }
         able = check_path(i->stop, stop);
         if (able)
@@ -39,6 +40,7 @@ bool check_path(int start, int stop) {
 int main() {
     int n, m, q, road1, road2, speed, start, stop;
     cin >> n >> m >> speed_limit >> q;
+    memset(visited, 0, sizeof(visited));
     for (int i=0; i<m; i++) {
         cin >> road1 >> road2 >> speed;
         if (speed > speed_limit)
@@ -49,15 +51,13 @@ int main() {
         city[road2].push_back(another_road);
     }
     for (int i=0; i<q; i++) {
-        for (int j=0; j<m; j++) {
-            visited[j] = false;
-        }
         cin >> start >> stop;
         if (check_path(start, stop)) {
             cout << "yes" << endl;
         } else {
             cout << "no" << endl;
         }
+        time_visited++;
     }
 }
 
